@@ -9,7 +9,7 @@ import HappyBirthday from "./components/HappyBirthday";
 import PhotoGallery from "./components/PhotoGallery";
 import Letter from "./components/Letter";
 import { motion } from "motion/react";
-import MusicPlayer from "./components/MusicPlayer";
+// import MusicPlayer from "./components/MusicPlayer";
 
 export default function BirthdayApp() {
   const [currentScreen, setCurrentScreen] = useState(0);
@@ -34,7 +34,7 @@ export default function BirthdayApp() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-950/30 via-black to-purple-950/30 overflow-hidden relative">
       {/* Music plays from the start */}
-      <MusicPlayer />
+      {/* <MusicPlayer /> */}
 
       {/* Radial gradient background effects */}
       <div

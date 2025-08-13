@@ -1,42 +1,43 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { Volume2, VolumeX } from "lucide-react";
 
 export default function MusicPlayer() {
   const audioRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
-  useEffect(() => {
-    const playMusic = () => {
-      if (audioRef.current) {
-        audioRef.current.volume = 0.5; // Adjust volume
-        audioRef.current.play().catch(() => {
-          console.warn("Autoplay blocked — user must interact first.");
-        });
+  const togglePlay = async () => {
+    if (!isPlaying) {
+      try {
+        await audioRef.current.play();
+        audioRef.current.volume = 0.5;
+        setIsPlaying(true);
+      } catch (err) {
+        console.error("Autoplay blocked:", err);
       }
-    };
-
-    // Try autoplay immediately
-    playMusic();
-
-    // Also play on first user click/tap (if autoplay was blocked)
-    const handleInteraction = () => {
-      playMusic();
-      document.removeEventListener("click", handleInteraction);
-      document.removeEventListener("touchstart", handleInteraction);
-    };
-
-    document.addEventListener("click", handleInteraction);
-    document.addEventListener("touchstart", handleInteraction);
-
-    return () => {
-      document.removeEventListener("click", handleInteraction);
-      document.removeEventListener("touchstart", handleInteraction);
-    };
-  }, []);
+    } else {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
 
   return (
-    <audio ref={audioRef} loop>
-      <source src="/aud.mp3" type="audio/mpeg" />
-    </audio>
+    <>
+      <audio ref={audioRef} loop>
+        <source src="/aud.mp3" type="audio/mpeg" />
+      </audio>
+
+      <motion.button
+        onClick={togglePlay}
+        className="fixed bottom-4 right-4 bg-pink-500 hover:bg-pink-600 p-4 rounded-full shadow-lg text-white z-50"
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        whileTap={{ scale: 0.9 }}
+      >
+        {isPlaying ? <Volume2 className="w-6 h-6" /> : <VolumeX className="w-6 h-6" />}
+      </motion.button>
+    </>
   );
 }
