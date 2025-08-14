@@ -26,7 +26,7 @@ export default function MusicPlayer() {
   return (
     <>
       <audio ref={audioRef} loop>
-        <source src="/aud.mp3" type="audio/mpeg" />
+        <source src="/aud2.mp3" type="audio/mpeg" />
       </audio>
 
       <motion.button
